@@ -59,11 +59,19 @@ export const refreshAccessToken = async (userId: string): Promise<string | null>
 
 export const getValidAccessToken = async (userId: string): Promise<string | null> => {
 
-  const { data: user } = await supabase
-    .from('users')
-    .select('access_token, token_expires_at')
-    .eq('id', userId)
+    const { data: user } = await supabase
+        .from('users')
+        .select('access_token, token_expires_at')
+        .eq('id', userId)
+        .single();
+
+    if(!user) return null;
+
+    const expiresAt = new Date(user.token_expires_at).getTime();
+    const fiveMinutes = 5 * 60 * 1000;
+    const isExpired = Date.now() > expiresAt - fiveMinutes;
 
 
+    
   
 };
