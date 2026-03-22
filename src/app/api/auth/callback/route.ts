@@ -7,6 +7,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
+// source: https://manishtamang.com/blog/spotify-api-with-next-js-to-fetch-user-s-top-track
 export const refreshAccessToken = async (userId: string): Promise<string | null> => {
     
     const { data: user } = await supabase
@@ -55,3 +56,14 @@ export const refreshAccessToken = async (userId: string): Promise<string | null>
     return access_token;
 
 }
+
+export const getValidAccessToken = async (userId: string): Promise<string | null> => {
+
+  const { data: user } = await supabase
+    .from('users')
+    .select('access_token, token_expires_at')
+    .eq('id', userId)
+
+
+  
+};
