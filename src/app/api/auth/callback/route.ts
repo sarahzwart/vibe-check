@@ -71,7 +71,11 @@ export const getValidAccessToken = async (userId: string): Promise<string | null
     const fiveMinutes = 5 * 60 * 1000;
     const isExpired = Date.now() > expiresAt - fiveMinutes;
 
+    // if access tokem is expired or about to expire, get a new one
+    if (isExpired) {
+        return await refreshAccessToken(userId);
+    }
 
-    
+    return user.access_token;
   
 };
